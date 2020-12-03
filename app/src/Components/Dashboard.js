@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import {
   Button,
@@ -7,6 +7,7 @@ import {
   ListItem,
   ListItemText,
   makeStyles,
+  TextField,
   Typography,
 } from "@material-ui/core";
 
@@ -40,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const Dashboard = () => {
   const classes = useStyles();
+  const [textValue, setTextValue] = useState('')
   return (
     <div>
       <Paper className={classes.root}>
@@ -69,7 +71,13 @@ export const Dashboard = () => {
           </div>
         </div>
         <div className={classes.flex}>
-        <Button color="primary">Send</Button>
+          <TextField
+            label="Send a message" 
+            className={classes.chatBox}
+            value={textValue}
+            onChange={e => setTextValue(e.target.value)}
+          />
+          <Button color="primary">Send</Button>
         </div>
       </Paper>
     </div>
