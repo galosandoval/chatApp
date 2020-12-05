@@ -65,7 +65,7 @@ export const Dashboard = () => {
             {[{ from: "user", msg: "hello" }].map((chat, index) => (
               <div className={classes.flex} key={index}>
                 <Chip label={chat.from} className={classes.chip} />
-                <Typography variant="p">{chat.msg}</Typography>
+                <Typography variant="body1" gutterBottom>{chat.msg}</Typography>
               </div>
             ))}
           </div>
