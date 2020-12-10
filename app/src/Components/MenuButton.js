@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Button, makeStyles, Menu, MenuItem } from "@material-ui/core";
 
+import { LoginModal } from "./LoginModal";
+import { RegisterModal } from './RegisterModal'
+
 const useStyles = makeStyles((theme) => ({
   button: {
     color: "white",
@@ -43,10 +46,10 @@ export const MenuButton = () => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>
-          <Button onClick={handleOpen}>Register</Button>
+          <Button onClick={handleOpen}><RegisterModal /></Button>
         </MenuItem>
         <MenuItem onClick={handleClose}>
-          <Button onClick={handleOpen}>Login</Button>
+          <Button onClick={handleOpen}><LoginModal /></Button>
         </MenuItem>
       </Menu>
     </div>
