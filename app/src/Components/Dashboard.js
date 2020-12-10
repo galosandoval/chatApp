@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import Paper from "@material-ui/core/Paper";
 import {
   Button,
@@ -10,6 +11,9 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+import axios from "axios";
+
+import { fetchMessages } from "../store";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     width: "30%",
     height: "300px",
     borderRight: "1px solid grey",
+    overflow: "scroll"
   },
   chatWindow: {
     width: "70%",
@@ -39,9 +44,60 @@ const useStyles = makeStyles((theme) => ({
   chip: {},
 }));
 
+const initialTopic = [
+  {
+    topic_id: 0,
+    title: "General"
+  }
+]
+
+const initialMessages = [
+  {
+    id: 0,
+    member_id: 0,
+    username: "gmoney",
+    description: "Hello World!"
+  }
+]
+
+const initialMember = [
+  {
+    id: 0,
+    username: "G",
+    password: "password123",
+    profile_picture: null
+  }
+]
+
+
 export const Dashboard = () => {
   const classes = useStyles();
-  const [textValue, setTextValue] = useState('')
+  const [textValue, setTextValue] = useState("");
+  const [topic, setTopic] = useState(initialTopic);
+  const [messages, setMessages] = useState(initialMessages);
+  const [members, setMembers] = useState(initialMember);
+  const [activeTopic, setActiveTopic] = useState(initialTopic[0].title)
+
+  useEffect(() => {
+    axios
+      .get("https://planner-be.herokuapp.com/messages")
+      .then((res) => {
+        console.log(res.data.messages)
+        setMessages(res.data.messages);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    axios
+      .get("https://planner-be.herokuapp.com/topic")
+      .then((res) => {
+        setTopic(res.data.topic);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <div>
       <Paper className={classes.root}>
@@ -49,33 +105,36 @@ export const Dashboard = () => {
           Chat App
         </Typography>
         <Typography variant="h5" component="h5">
-          Topic Placeholder
+          {activeTopic}
         </Typography>
         <div className={classes.flex}>
           <div className={classes.topicsWindow}>
             <List component="nav" aria-label="main mailbox folders">
-              {["topic"].map((topic) => (
-                <ListItem key={topic} button>
-                  <ListItemText primary={topic} />
+              {topic.map((t) => (
+                <ListItem onClick={(e) => setActiveTopic(e.target.innerText)} key={t.topic_id} button>
+                  <ListItemText primary={t.title} />
                 </ListItem>
               ))}
             </List>
           </div>
           <div className={classes.chatWindow}>
-            {[{ from: "user", msg: "hello" }].map((chat, index) => (
-              <div className={classes.flex} key={index}>
-                <Chip label={chat.from} className={classes.chip} />
-                <Typography variant="body1" gutterBottom>{chat.msg}</Typography>
+            {messages.map((chat) => 
+              chat.title === activeTopic ? (
+              <div className={classes.flex} key={chat.id}>
+                <Chip label={chat.username} className={classes.chip} />
+                <Typography variant="body1" gutterBottom>
+                  {chat.description}
+                </Typography>
               </div>
-            ))}
+            ): null )}
           </div>
         </div>
         <div className={classes.flex}>
           <TextField
-            label="Send a message" 
+            label="Send a message"
             className={classes.chatBox}
             value={textValue}
-            onChange={e => setTextValue(e.target.value)}
+            onChange={(e) => setTextValue(e.target.value)}
           />
           <Button color="primary">Send</Button>
         </div>
@@ -83,3 +142,11 @@ export const Dashboard = () => {
     </div>
   );
 };
+
+const mapStateToProps = (state) => {
+  return {
+    topic: state.topic,
+  };
+};
+
+export default connect(mapStateToProps, { fetchMessages })(Dashboard);
