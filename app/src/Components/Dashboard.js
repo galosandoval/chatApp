@@ -78,6 +78,10 @@ export const Dashboard = () => {
   const [members, setMembers] = useState(initialMember);
   const [activeTopic, setActiveTopic] = useState(initialTopic[0].title)
 
+  const postNewMessage = () => {
+    axios.post("")
+  }
+
   useEffect(() => {
     axios
       .get("https://planner-be.herokuapp.com/messages")
@@ -101,9 +105,6 @@ export const Dashboard = () => {
   return (
     <div>
       <Paper className={classes.root}>
-        <Typography variant="h4" component="h4">
-          Chat App
-        </Typography>
         <Typography variant="h5" component="h5">
           {activeTopic}
         </Typography>
