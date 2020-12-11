@@ -1,16 +1,22 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Modal, Backdrop, Fade, Button, TextField } from '@material-ui/core'
+import React from "react";
+import {
+  Modal,
+  Backdrop,
+  Fade,
+  Button,
+  TextField,
+  makeStyles,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
+    border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -30,9 +36,7 @@ export const LoginModal = () => {
 
   return (
     <div>
-      <Button onClick={handleOpen}>
-        Login
-      </Button>
+      <Button onClick={handleOpen}>Login</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -47,16 +51,16 @@ export const LoginModal = () => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-          <TextField
-          required
-          id="filled-required"
-          label="Required"
-          defaultValue="Hello World"
-          variant="filled"
-        />
+            <TextField
+              required
+              id="filled-required"
+              label="Required"
+              defaultValue="Hello World"
+              variant="filled"
+            />
           </div>
         </Fade>
       </Modal>
     </div>
   );
-}
+};
