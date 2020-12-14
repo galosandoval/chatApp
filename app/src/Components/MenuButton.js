@@ -46,10 +46,10 @@ export const MenuButton = () => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>
-          <Button onClick={handleOpen}><RegisterModal /></Button>
+          {/* <Button onClick={handleOpen}><RegisterModal /></Button> */}
         </MenuItem>
         <MenuItem onClick={handleClose}>
-          <Button onClick={handleOpen}><LoginModal /></Button>
+          {/* <Button onClick={handleOpen}><LoginModal /></Button> */}
         </MenuItem>
       </Menu>
     </div>
