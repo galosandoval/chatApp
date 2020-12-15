@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { TextField, Button, makeStyles } from "@material-ui/core";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 import FormSchema from "./FormSchema";
 
@@ -23,12 +24,14 @@ const useStyles = makeStyles((theme) => ({
 export const Register = (props) => {
   const classes = useStyles();
   const [disabled, setDisabled] = useState(true);
+  const history = useHistory();
 
   const { inputChange, submit, formValues } = props;
 
   const handleSubmit = (event) => {
     event.preventDefault();
     submit();
+    history.push("/dashboard");
   };
 
   const handleInputChange = (event) => {
@@ -43,40 +46,40 @@ export const Register = (props) => {
   }, [formValues]);
   return (
     <div>
-      <form className={classes.paper} onSubmit={handleSubmit}>
-        <TextField
-          value={formValues.username}
-          onChange={handleInputChange}
-          required
-          id="filled-required"
-          label="Username"
-          variant="filled"
-          name="username"
-        />
-        <TextField
-          value={formValues.password}
-          onChange={handleInputChange}
-          required
-          id="filled-password-input"
-          label="Password"
-          type="password"
-          variant="filled"
-          name="password"
-        />
-        <TextField
-          value={formValues.passwordConfirmation}
-          onChange={handleInputChange}
-          required
-          id="filled-password-input"
-          type="password"
-          label="Re-enter Password"
-          variant="filled"
-          name="passwordConfirmation"
-        />
-        <Button type="submit" variant="contained" disabled={disabled}>
-          Sign Up
-        </Button>
-      </form>
+          <form className={classes.paper} onSubmit={handleSubmit}>
+            <TextField
+              value={formValues.username}
+              onChange={handleInputChange}
+              required
+              id="filled-required"
+              label="Username"
+              variant="filled"
+              name="username"
+            />
+            <TextField
+              value={formValues.password}
+              onChange={handleInputChange}
+              required
+              id="filled-password-input"
+              label="Password"
+              type="password"
+              variant="filled"
+              name="password"
+            />
+            <TextField
+              value={formValues.passwordConfirmation}
+              onChange={handleInputChange}
+              required
+              id="filled-password-input"
+              type="password"
+              label="Re-enter Password"
+              variant="filled"
+              name="passwordConfirmation"
+            />
+            <Button type="submit" variant="contained" disabled={disabled}>
+              Sign Up
+            </Button>
+          </form>
     </div>
   );
 };

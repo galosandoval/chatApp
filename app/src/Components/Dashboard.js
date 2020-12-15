@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 
-import { fetchMessages } from "../store";
+import { NavBar } from "./NavBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,7 +86,6 @@ export const Dashboard = () => {
     axios
       .get("https://planner-be.herokuapp.com/messages")
       .then((res) => {
-        console.log(res.data.messages)
         setMessages(res.data.messages);
       })
       .catch((err) => {
@@ -104,6 +103,7 @@ export const Dashboard = () => {
   }, []);
   return (
     <div>
+      <NavBar/>
       <Paper className={classes.root}>
         <Typography variant="h5" component="h5">
           {activeTopic}
@@ -143,11 +143,3 @@ export const Dashboard = () => {
     </div>
   );
 };
-
-const mapStateToProps = (state) => {
-  return {
-    topic: state.topic,
-  };
-};
-
-export default connect(mapStateToProps, { fetchMessages })(Dashboard);

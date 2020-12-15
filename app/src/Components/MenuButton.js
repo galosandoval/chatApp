@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Button, makeStyles, Menu, MenuItem } from "@material-ui/core";
-
-import { LoginModal } from "./LoginModal";
-import { RegisterModal } from './RegisterModal'
+import { useHistory } from "react-router-dom"
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -14,6 +12,7 @@ export const MenuButton = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
+  const history = useHistory()
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -26,6 +25,8 @@ export const MenuButton = () => {
   const handleClose = () => {
     setAnchorEl(null);
     setOpen(false);
+    localStorage.clear()
+    history.push('/')
   };
 
   return (
@@ -46,10 +47,7 @@ export const MenuButton = () => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>
-          {/* <Button onClick={handleOpen}><RegisterModal /></Button> */}
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          {/* <Button onClick={handleOpen}><LoginModal /></Button> */}
+          <Button onClick={handleOpen}>Log Out</Button>
         </MenuItem>
       </Menu>
     </div>

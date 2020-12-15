@@ -16,6 +16,7 @@ import { NavBar } from "./Components/NavBar";
 import { Login } from "./Components/Login";
 import PrivateRoute from "./utils/PrivateRoute";
 import FormSchema from "./Components/FormSchema";
+import { Register } from "./Components/Register";
 
 const initialFormValues = {
   username: "",
@@ -73,17 +74,19 @@ function App() {
   };
 
   return (
-      <div className="App">
-        <NavBar />
-
-            <Login
-              formValues={formValues}
-              inputChange={inputChange}
-              submit={submit}
-            />
-
-      </div>
- 
+    <div className="App">
+      <Switch>
+        <Route path="/" exact>
+          <NavBar />
+          <Login
+            formValues={formValues}
+            inputChange={inputChange}
+            submit={submit}
+          />
+        </Route>
+        <PrivateRoute path="/dashboard" component={Dashboard} exact />
+      </Switch>
+    </div>
   );
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, makeStyles, Button } from "@material-ui/core";
+import { TextField, makeStyles, Button, Typography } from "@material-ui/core";
 import {
   BrowserRouter as Router,
   useHistory,
@@ -9,9 +9,9 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 
-import PrivateRoute from '../utils/PrivateRoute'
+import PrivateRoute from "../utils/PrivateRoute";
 import { Register } from "./Register";
-import { Dashboard } from './Dashboard' 
+import { Dashboard } from "./Dashboard";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -53,7 +53,7 @@ export const Login = (props) => {
       .then((res) => {
         console.log("login", res);
         localStorage.setItem("token", res.data.token);
-        console.log(localStorage)
+        console.log(localStorage);
         history.push("/dashboard");
       })
       .catch((err) => err);
@@ -61,48 +61,44 @@ export const Login = (props) => {
 
   return (
     <div className={classes.paper}>
-      <h4>Login</h4>
-      <form onSubmit={login}>
-        <TextField
-          variant="outlined"
-          name="username"
-          type="text"
-          label="Username"
-          value={creds.username}
-          onChange={handleChange}
-        />
-        <TextField
-          variant="outlined"
-          name="password"
-          type="password"
-          label="Password"
-          value={creds.password}
-          onChange={handleChange}
-        />
-        <Button variant="contained" color="primary" type="submit">
-          Log In
-        </Button>
-        <br></br>
-      </form>
       <Router>
-        <Switch>
-          <PrivateRoute exact path="/dashboard">
-            <Dashboard />
-          </PrivateRoute>
-        </Switch>
-    </Router>
-      {/* <Router>
-      <Link to="/signup">Don't have an account?</Link>
       <Switch>
-        <Route path="/signup">
-          <Register
-            inputChange={inputChange}
-            submit={submit}
-            formValues={formValues}
-          />
+        <Route exact path="/">
+          <Typography variant="h5">Login</Typography>
+          <form onSubmit={login}>
+            <TextField
+              variant="outlined"
+              name="username"
+              type="text"
+              label="Username"
+              value={creds.username}
+              onChange={handleChange}
+            />
+            <TextField
+              variant="outlined"
+              name="password"
+              type="password"
+              label="Password"
+              value={creds.password}
+              onChange={handleChange}
+            />
+            <Button variant="contained" color="primary" type="submit">
+              Log In
+            </Button>
+            <br></br>
+            <Link to="/register">Don't Have an Account?</Link>
+          </form>
         </Route>
-      </Switch>
-      </Router> */}
+        
+          <Route exact path="/register">
+            <Register
+              formValues={formValues}
+              inputChange={inputChange}
+              submit={submit}
+            />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 };
