@@ -1,12 +1,21 @@
-import React, {useState} from 'react'
-import { NavLink, Route, Switch, useHistory } from 'react-router-dom'
-import axios from 'axios'
+import React, { useState } from "react";
+// import { Router } from "@reach/router";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  useHistory,
+  Link,
+} from "react-router-dom";
+import axios from "axios";
+import * as yup from "yup";
 
 import "./App.css";
 import { Dashboard } from "./Components/Dashboard";
 import { NavBar } from "./Components/NavBar";
 import { Login } from "./Components/Login";
 import PrivateRoute from "./utils/PrivateRoute";
+import FormSchema from "./Components/FormSchema";
 
 const initialFormValues = {
   username: "",
@@ -17,10 +26,8 @@ const initialFormValues = {
 function App() {
   const [formValues, setFormValues] = useState(initialFormValues);
   const [formErrors, setFormErrors] = useState(initialFormValues);
-  const [disabled, setDisabled] = useState(true);
 
-  const history = useHistory()
-
+  const history = useHistory();
 
   const postNewUser = (newUser) => {
     axios
@@ -28,23 +35,55 @@ function App() {
       .then((res) => {
         localStorage.setItem("token", res.data.token);
         setFormValues(initialFormValues);
-        history.push("/dashboard")
+        history.push("/dashboard");
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  const inputChange = (name, value) => {
+    yup
+      .reach(FormSchema, name)
+      .validate(value)
+      .then((valid) => {
+        setFormErrors({
+          ...formErrors,
+          [name]: "",
+        });
+      })
+      .catch((err) => {
+        setFormErrors({
+          ...formErrors,
+          [name]: err.errors[0],
+        });
+      });
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
+  const submit = () => {
+    const newUser = {
+      username: formValues.username.trim(),
+      password: formValues.password.trim(),
+    };
+    postNewUser(newUser);
+  };
+
   return (
-    <div className="App">
-      <NavBar />
-      <Switch>
-        <Route path="/">
-          <Login />
-        </Route>
-        <PrivateRoute exact path="/dashboard" component={Dashboard} />
-      </Switch>
-    </div>
+      <div className="App">
+        <NavBar />
+
+            <Login
+              formValues={formValues}
+              inputChange={inputChange}
+              submit={submit}
+            />
+
+      </div>
+ 
   );
 }
 

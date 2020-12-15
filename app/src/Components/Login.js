@@ -1,7 +1,17 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { TextField, makeStyles, Button } from "@material-ui/core";
-import { NavLink, useHistory, Route } from 'react-router-dom'
-import axios from 'axios'
+import {
+  BrowserRouter as Router,
+  useHistory,
+  Route,
+  Link,
+  Switch,
+} from "react-router-dom";
+import axios from "axios";
+
+import PrivateRoute from '../utils/PrivateRoute'
+import { Register } from "./Register";
+import { Dashboard } from './Dashboard' 
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -22,10 +32,12 @@ const initialState = {
   password: "",
 };
 
-export const Login = () => {
+export const Login = (props) => {
   const classes = useStyles();
   const [creds, setCreds] = useState(initialState);
   const history = useHistory();
+
+  const { inputChange, submit, formValues } = props;
 
   const handleChange = (e) => {
     setCreds({
@@ -41,27 +53,14 @@ export const Login = () => {
       .then((res) => {
         console.log("login", res);
         localStorage.setItem("token", res.data.token);
+        console.log(localStorage)
         history.push("/dashboard");
       })
       .catch((err) => err);
   };
 
-  // Event listeners
-
-  function changeColor(e) {
-    e.target.style.color = "#000099";
-  }
-
-  function changeColorBack(e) {
-    e.target.style.color = "black";
-  }
-
   return (
     <div className={classes.paper}>
-      <Route path="/">
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/signup">Sign Up</NavLink>
-      </Route>
       <h4>Login</h4>
       <form onSubmit={login}>
         <TextField
@@ -84,15 +83,26 @@ export const Login = () => {
           Log In
         </Button>
         <br></br>
-        <div
-          className="makeLink"
-          onClick={() => history.push("/signup")}
-          onMouseOver={changeColor}
-          onMouseOut={changeColorBack}
-        >
-          Don't have an account? Click to sign up.
-        </div>
       </form>
+      <Router>
+        <Switch>
+          <PrivateRoute exact path="/dashboard">
+            <Dashboard />
+          </PrivateRoute>
+        </Switch>
+    </Router>
+      {/* <Router>
+      <Link to="/signup">Don't have an account?</Link>
+      <Switch>
+        <Route path="/signup">
+          <Register
+            inputChange={inputChange}
+            submit={submit}
+            formValues={formValues}
+          />
+        </Route>
+      </Switch>
+      </Router> */}
     </div>
   );
 };
