@@ -9,9 +9,7 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 
-import PrivateRoute from "../utils/PrivateRoute";
 import { Register } from "./Register";
-import { Dashboard } from "./Dashboard";
 
 const useStyles = makeStyles((theme) => ({
   modal: {

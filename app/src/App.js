@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 // import { Router } from "@reach/router";
 import {
-  BrowserRouter as Router,
   Route,
   Switch,
   useHistory,
-  Link,
 } from "react-router-dom";
 import axios from "axios";
 import * as yup from "yup";
@@ -16,7 +14,6 @@ import { NavBar } from "./Components/NavBar";
 import { Login } from "./Components/Login";
 import PrivateRoute from "./utils/PrivateRoute";
 import FormSchema from "./Components/FormSchema";
-import { Register } from "./Components/Register";
 
 const initialFormValues = {
   username: "",

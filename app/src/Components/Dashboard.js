@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
 import Paper from "@material-ui/core/Paper";
 import {
   Button,
@@ -62,21 +61,11 @@ const initialMessages = [
   },
 ];
 
-const initialMember = [
-  {
-    id: 0,
-    username: "G",
-    password: "password123",
-    profile_picture: null,
-  },
-];
-
 export const Dashboard = () => {
   const classes = useStyles();
   const [textValue, setTextValue] = useState("");
   const [topic, setTopic] = useState(initialTopic);
   const [messages, setMessages] = useState(initialMessages);
-  const [members, setMembers] = useState(initialMember);
   const [activeTopic, setActiveTopic] = useState(initialTopic[0].title);
 
   const updateScroll = () => {
@@ -94,7 +83,7 @@ export const Dashboard = () => {
       .get("https://planner-be.herokuapp.com/messages")
       .then((res) => {
         setMessages(res.data.messages);
-        updateScroll()
+        updateScroll();
       })
       .catch((err) => {
         console.log(err);
@@ -107,7 +96,6 @@ export const Dashboard = () => {
       member_id: Number(localStorage.getItem("member_id")),
       topic_id: getTopicId(activeTopic),
     };
-    console.log(postData);
     axiosWithAuth()
       .post("messages", postData)
       .then((res) => {
@@ -126,7 +114,9 @@ export const Dashboard = () => {
 
   useEffect(() => {
     getMessages();
+  }, []);
 
+  useEffect(() => {
     axios
       .get("https://planner-be.herokuapp.com/topic")
       .then((res) => {
@@ -178,7 +168,9 @@ export const Dashboard = () => {
               value={textValue}
               onChange={(e) => setTextValue(e.target.value)}
             />
-            <Button onClick={handleSubmit} color="primary">Send</Button>
+            <Button onClick={handleSubmit} color="primary">
+              Send
+            </Button>
           </form>
         </div>
       </Paper>
