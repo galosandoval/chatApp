@@ -102,7 +102,7 @@ export const Login = (props) => {
               formValues={formValues}
               inputChange={inputChange}
               submit={submit}
-              creds={creds}
+              findMemberId={findMemberId}
             />
           </Route>
         </Switch>

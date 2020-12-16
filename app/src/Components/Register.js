@@ -25,19 +25,21 @@ export const Register = (props) => {
   const [disabled, setDisabled] = useState(true);
   const history = useHistory();
 
-  const { inputChange, submit, formValues, creds } = props;
+  const { inputChange, submit, formValues, findMemberId } = props;
 
   const handleSubmit = (event) => {
     event.preventDefault();
     submit();
+    findMemberId(localStorage.getItem('username'))
     history.push("/dashboard");
-    localStorage.setItem('member_id', creds.username)
   };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     inputChange(name, value);
   };
+
+  console.log("here",findMemberId(formValues.username))
 
   useEffect(() => {
     FormSchema.isValid(formValues).then((valid) => {

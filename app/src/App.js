@@ -77,6 +77,7 @@ function App() {
       username: formValues.username.trim(),
       password: formValues.password.trim(),
     };
+    localStorage.setItem('username', formValues.username)
     postNewUser(newUser);
   };
 
