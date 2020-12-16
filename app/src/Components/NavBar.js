@@ -3,10 +3,7 @@ import {
   AppBar,
   makeStyles,
   Toolbar,
-  Typography,
-  Button,
-  MenuItem,
-  Menu,
+  Typography
 } from "@material-ui/core";
 
 import { MenuButton } from './MenuButton'
@@ -23,15 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const NavBar = () => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  
   return (
     <div className={classes.root}>
       <AppBar position="static">

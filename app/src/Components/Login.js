@@ -35,9 +35,10 @@ const initialState = {
 export const Login = (props) => {
   const classes = useStyles();
   const [creds, setCreds] = useState(initialState);
+  const [currentUser, setCurrentUser] = useState(null);
   const history = useHistory();
 
-  const { inputChange, submit, formValues } = props;
+  const { inputChange, submit, formValues, members } = props;
 
   const handleChange = (e) => {
     setCreds({
@@ -45,56 +46,67 @@ export const Login = (props) => {
       [e.target.name]: e.target.value,
     });
   };
-
+  
   const login = (e) => {
     e.preventDefault();
     axios
-      .post("https://planner-be.herokuapp.com/api/login", creds)
-      .then((res) => {
-        console.log("login", res);
-        localStorage.setItem("token", res.data.token);
-        console.log(localStorage);
-        history.push("/dashboard");
-      })
-      .catch((err) => err);
+    .post("https://planner-be.herokuapp.com/api/login", creds)
+    .then((res) => {
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("username", creds.username);
+      setCurrentUser(creds.username)
+      findMemberId(creds.username)
+      history.push("/dashboard");
+    })
+    .catch((err) => err);
+  };
+  
+  const findMemberId = (username) => {
+    if (members) {
+      const foundMember = members.filter((member) => member.username === username);
+      if (foundMember.length > 0) {
+        localStorage.setItem('member_id', foundMember[0].id)
+      }
+    }
   };
 
   return (
     <div className={classes.paper}>
       <Router>
-      <Switch>
-        <Route exact path="/">
-          <Typography variant="h5">Login</Typography>
-          <form onSubmit={login}>
-            <TextField
-              variant="outlined"
-              name="username"
-              type="text"
-              label="Username"
-              value={creds.username}
-              onChange={handleChange}
-            />
-            <TextField
-              variant="outlined"
-              name="password"
-              type="password"
-              label="Password"
-              value={creds.password}
-              onChange={handleChange}
-            />
-            <Button variant="contained" color="primary" type="submit">
-              Log In
-            </Button>
-            <br></br>
-            <Link to="/register">Don't Have an Account?</Link>
-          </form>
-        </Route>
-        
+        <Switch>
+          <Route exact path="/">
+            <Typography variant="h5">Login</Typography>
+            <form onSubmit={login}>
+              <TextField
+                variant="outlined"
+                name="username"
+                type="text"
+                label="Username"
+                value={creds.username}
+                onChange={handleChange}
+              />
+              <TextField
+                variant="outlined"
+                name="password"
+                type="password"
+                label="Password"
+                value={creds.password}
+                onChange={handleChange}
+              />
+              <Button variant="contained" color="primary" type="submit">
+                Log In
+              </Button>
+              <br></br>
+              <Link to="/register">Don't Have an Account?</Link>
+            </form>
+          </Route>
+
           <Route exact path="/register">
             <Register
               formValues={formValues}
               inputChange={inputChange}
               submit={submit}
+              creds={creds}
             />
           </Route>
         </Switch>

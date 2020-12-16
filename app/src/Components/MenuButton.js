@@ -20,13 +20,13 @@ export const MenuButton = () => {
 
   const handleOpen = () => {
     setOpen(true);
+    localStorage.clear()
+    history.push('/')
   };
 
   const handleClose = () => {
     setAnchorEl(null);
     setOpen(false);
-    localStorage.clear()
-    history.push('/')
   };
 
   return (

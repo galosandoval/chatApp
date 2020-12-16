@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { Router } from "@reach/router";
 import {
   BrowserRouter as Router,
@@ -27,6 +27,7 @@ const initialFormValues = {
 function App() {
   const [formValues, setFormValues] = useState(initialFormValues);
   const [formErrors, setFormErrors] = useState(initialFormValues);
+  const [members, setMembers] = useState([])
 
   const history = useHistory();
 
@@ -42,6 +43,15 @@ function App() {
         console.log(err);
       });
   };
+
+  const getMembers = () => {
+    axios
+    .get('https://planner-be.herokuapp.com/member')
+    .then(res => setMembers(res.data.members))
+    .catch(err => {
+      console.log(err)
+    })
+  }
 
   const inputChange = (name, value) => {
     yup
@@ -71,7 +81,12 @@ function App() {
       password: formValues.password.trim(),
     };
     postNewUser(newUser);
+    // getUserId()
   };
+
+  useEffect(() => {
+    getMembers()
+  },[])
 
   return (
     <div className="App">
@@ -82,6 +97,7 @@ function App() {
             formValues={formValues}
             inputChange={inputChange}
             submit={submit}
+            members={members}
           />
         </Route>
         <PrivateRoute path="/dashboard" component={Dashboard} exact />

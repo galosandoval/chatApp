@@ -26,12 +26,13 @@ export const Register = (props) => {
   const [disabled, setDisabled] = useState(true);
   const history = useHistory();
 
-  const { inputChange, submit, formValues } = props;
+  const { inputChange, submit, formValues, creds } = props;
 
   const handleSubmit = (event) => {
     event.preventDefault();
     submit();
     history.push("/dashboard");
+    localStorage.setItem('member_id', creds.username)
   };
 
   const handleInputChange = (event) => {
