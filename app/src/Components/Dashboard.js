@@ -13,7 +13,6 @@ import {
 import axios from "axios";
 
 import { NavBar } from "./NavBar";
-import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
