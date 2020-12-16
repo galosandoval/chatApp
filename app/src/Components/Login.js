@@ -33,7 +33,6 @@ const initialState = {
 export const Login = (props) => {
   const classes = useStyles();
   const [creds, setCreds] = useState(initialState);
-  const [currentUser, setCurrentUser] = useState(null);
   const history = useHistory();
 
   const { inputChange, submit, formValues, members } = props;
@@ -52,7 +51,6 @@ export const Login = (props) => {
     .then((res) => {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("username", creds.username);
-      setCurrentUser(creds.username)
       findMemberId(creds.username)
       history.push("/dashboard");
     })

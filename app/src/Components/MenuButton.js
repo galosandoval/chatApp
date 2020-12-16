@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
 export const MenuButton = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [open, setOpen] = useState(false);
   const history = useHistory()
 
   const handleClick = (event) => {
@@ -19,14 +18,12 @@ export const MenuButton = () => {
   };
 
   const handleOpen = () => {
-    setOpen(true);
     localStorage.clear()
     history.push('/')
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-    setOpen(false);
   };
 
   return (

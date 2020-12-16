@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Paper from "@material-ui/core/Paper";
 import {
   Button,
@@ -78,7 +78,7 @@ export const Dashboard = () => {
     return filteredTopic[0].topic_id;
   };
 
-  const getMessages = () => {
+  const getMessages = useCallback(() => {
     axios
       .get("https://planner-be.herokuapp.com/messages")
       .then((res) => {
@@ -88,7 +88,7 @@ export const Dashboard = () => {
       .catch((err) => {
         console.log(err);
       });
-  };
+  }, []);
 
   const postNewMessage = () => {
     const postData = {
@@ -114,7 +114,7 @@ export const Dashboard = () => {
 
   useEffect(() => {
     getMessages();
-  }, []);
+  }, [getMessages]);
 
   useEffect(() => {
     axios

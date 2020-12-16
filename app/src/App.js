@@ -78,7 +78,6 @@ function App() {
       password: formValues.password.trim(),
     };
     postNewUser(newUser);
-    // getUserId()
   };
 
   useEffect(() => {
