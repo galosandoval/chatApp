@@ -96,8 +96,8 @@ export const Dashboard = () => {
       member_id: Number(localStorage.getItem("member_id")),
       topic_id: getTopicId(activeTopic),
     };
-    axiosWithAuth()
-      .post("messages", postData)
+    axios
+      .post("https://planner-be.herokuapp.com/messages", postData)
       .then((res) => {
         setTextValue("");
         getMessages();
