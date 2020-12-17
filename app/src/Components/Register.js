@@ -29,7 +29,7 @@ export const Register = (props) => {
     event.preventDefault();
     submit();
     findMemberId(localStorage.getItem('username'))
-   
+    console.log(localStorage.getItem('member_id'))
   };
 
   const handleInputChange = (event) => {
@@ -37,7 +37,6 @@ export const Register = (props) => {
     inputChange(name, value);
   };
 
-  console.log("here",findMemberId(formValues.username))
 
   useEffect(() => {
     FormSchema.isValid(formValues).then((valid) => {

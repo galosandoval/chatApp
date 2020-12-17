@@ -37,37 +37,35 @@ export const Login = (props) => {
 
   const { inputChange, submit, formValues, members } = props;
 
-  const handleChange = (e) => {
-    if (e.target.name) {
-      setCreds({
-        ...creds,
-        [e.target.name]: e.target.value,
-      });
-    } else {
-      setCreds(...formValues)
+  const findMemberId = (username) => {
+    if (members) {
+      const foundMember = members.filter(
+        (member) => member.username === username
+      );
+      if (foundMember.length > 0) {
+        localStorage.setItem("member_id", foundMember[0].id);
+      }
     }
-    localStorage.setItem("username", creds.username);
-    findMemberId(creds.username)
   };
-  
+
+  const handleChange = (e) => {
+    setCreds({
+      ...creds,
+      [e.target.name]: e.target.value,
+    });
+    localStorage.setItem("username", creds.username);
+    findMemberId(creds.username);
+  };
+
   const login = (e) => {
     e.preventDefault();
     axios
-    .post("https://planner-be.herokuapp.com/api/login", creds)
-    .then((res) => {
-      localStorage.setItem("token", res.data.token);
-      history.push("/dashboard");
-    })
-    .catch((err) => err);
-  };
-  
-  const findMemberId = (username) => {
-    if (members) {
-      const foundMember = members.filter((member) => member.username === username);
-      if (foundMember.length > 0) {
-        localStorage.setItem('member_id', foundMember[0].id)
-      }
-    }
+      .post("https://planner-be.herokuapp.com/api/login", creds)
+      .then((res) => {
+        localStorage.setItem("token", res.data.token);
+        history.push("/dashboard");
+      })
+      .catch((err) => err);
   };
 
   return (
