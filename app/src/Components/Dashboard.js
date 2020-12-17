@@ -13,6 +13,7 @@ import {
 import axios from "axios";
 
 import { NavBar } from "./NavBar";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -95,7 +96,7 @@ export const Dashboard = () => {
       member_id: Number(localStorage.getItem("member_id")),
       topic_id: getTopicId(activeTopic),
     };
-    axios
+    axiosWithAuth()
       .post("https://planner-be.herokuapp.com/messages", postData)
       .then((res) => {
         setTextValue("");
