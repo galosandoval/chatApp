@@ -38,10 +38,16 @@ export const Login = (props) => {
   const { inputChange, submit, formValues, members } = props;
 
   const handleChange = (e) => {
-    setCreds({
-      ...creds,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name) {
+      setCreds({
+        ...creds,
+        [e.target.name]: e.target.value,
+      });
+    } else {
+      setCreds(...formValues)
+    }
+    localStorage.setItem("username", creds.username);
+    findMemberId(creds.username)
   };
   
   const login = (e) => {
@@ -50,8 +56,6 @@ export const Login = (props) => {
     .post("https://planner-be.herokuapp.com/api/login", creds)
     .then((res) => {
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("username", creds.username);
-      findMemberId(creds.username)
       history.push("/dashboard");
     })
     .catch((err) => err);

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { TextField, Button, makeStyles } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
 
 import FormSchema from "./FormSchema";
 
@@ -23,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
 export const Register = (props) => {
   const classes = useStyles();
   const [disabled, setDisabled] = useState(true);
-  const history = useHistory();
 
   const { inputChange, submit, formValues, findMemberId } = props;
 
@@ -31,7 +29,7 @@ export const Register = (props) => {
     event.preventDefault();
     submit();
     findMemberId(localStorage.getItem('username'))
-    history.push("/dashboard");
+   
   };
 
   const handleInputChange = (event) => {

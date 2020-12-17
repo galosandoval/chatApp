@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import { Router } from "@reach/router";
 import {
   Route,
   Switch,
@@ -34,12 +33,13 @@ function App() {
       .then((res) => {
         localStorage.setItem("token", res.data.token);
         setFormValues(initialFormValues);
-        history.push("/dashboard");
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  
 
   const getMembers = () => {
     axios
@@ -79,6 +79,14 @@ function App() {
     };
     localStorage.setItem('username', formValues.username)
     postNewUser(newUser);
+    axios
+    .post("https://planner-be.herokuapp.com/api/login", newUser)
+    .then(res => {
+      localStorage.setItem('token', res.data.token)
+      history.push('/dashboard')
+    })
+    setFormValues(initialFormValues)
+
   };
 
   useEffect(() => {
