@@ -67,6 +67,7 @@ export const Dashboard = () => {
   const [topic, setTopic] = useState(initialTopic);
   const [messages, setMessages] = useState(initialMessages);
   const [activeTopic, setActiveTopic] = useState(initialTopic[0].title);
+  const [disabled, setDisabled] = useState(true);
 
   const updateScroll = () => {
     const element = document.getElementById("scroll");
@@ -96,6 +97,7 @@ export const Dashboard = () => {
       member_id: Number(localStorage.getItem("member_id")),
       topic_id: getTopicId(activeTopic),
     };
+
     axiosWithAuth()
       .post("https://planner-be.herokuapp.com/messages", postData)
       .then((res) => {
@@ -111,6 +113,14 @@ export const Dashboard = () => {
     event.preventDefault();
     postNewMessage();
   };
+
+  useEffect(() => {
+    if (textValue.length === 0) {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
+  }, [textValue]);
 
   useEffect(() => {
     getMessages();
@@ -161,17 +171,15 @@ export const Dashboard = () => {
           </div>
         </div>
         <div className={classes.flex}>
-          <form>
             <TextField
               label="Send a message"
               className={classes.chatBox}
               value={textValue}
-              onChange={(e) => setTextValue(e.target.value)}
+              onChange={e => setTextValue(e.target.value)}
             />
-            <Button onClick={handleSubmit} color="primary">
+            <Button onClick={handleSubmit} disabled={disabled} color="primary">
               Send
             </Button>
-          </form>
         </div>
       </Paper>
     </div>
