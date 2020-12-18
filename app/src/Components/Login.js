@@ -35,27 +35,14 @@ export const Login = (props) => {
   const [creds, setCreds] = useState(initialState);
   const history = useHistory();
 
-  const { inputChange, submit, formValues, members } = props;
+  const { inputChange, submit, formValues, saveToLocalStorage } = props;
 
-  const findMemberId = (username) => {
-    if (members) {
-      const foundMember = members.filter(
-        (member) => member.username === username
-      );
-      if (foundMember.length > 0) {
-        localStorage.setItem("member_id", foundMember[0].id);
-      }
-    }
-  };
 
   const handleChange = (e) => {
     setCreds({
       ...creds,
       [e.target.name]: e.target.value,
     });
-
-    localStorage.setItem("username", creds.username);
-    findMemberId(creds.username);
   };
 
   const login = (e) => {
@@ -63,6 +50,7 @@ export const Login = (props) => {
     axios
       .post("https://planner-be.herokuapp.com/api/login", creds)
       .then((res) => {
+        saveToLocalStorage(res.data.username, res.data.id)
         localStorage.setItem("token", res.data.token);
         history.push("/dashboard");
       })
@@ -105,7 +93,6 @@ export const Login = (props) => {
               formValues={formValues}
               inputChange={inputChange}
               submit={submit}
-              findMemberId={findMemberId}
             />
           </Route>
         </Switch>

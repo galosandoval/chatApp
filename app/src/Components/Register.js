@@ -23,20 +23,17 @@ export const Register = (props) => {
   const classes = useStyles();
   const [disabled, setDisabled] = useState(true);
 
-  const { inputChange, submit, formValues, findMemberId } = props;
+  const { inputChange, submit, formValues } = props;
 
   const handleSubmit = (event) => {
     event.preventDefault();
     submit();
-    findMemberId(localStorage.getItem('username'))
-    console.log(localStorage.getItem('member_id'))
   };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     inputChange(name, value);
   };
-
 
   useEffect(() => {
     FormSchema.isValid(formValues).then((valid) => {
@@ -45,40 +42,40 @@ export const Register = (props) => {
   }, [formValues]);
   return (
     <div>
-          <form className={classes.paper} onSubmit={handleSubmit}>
-            <TextField
-              value={formValues.username}
-              onChange={handleInputChange}
-              required
-              id="filled-required"
-              label="Username"
-              variant="filled"
-              name="username"
-            />
-            <TextField
-              value={formValues.password}
-              onChange={handleInputChange}
-              required
-              id="filled-password-input"
-              label="Password"
-              type="password"
-              variant="filled"
-              name="password"
-            />
-            <TextField
-              value={formValues.passwordConfirmation}
-              onChange={handleInputChange}
-              required
-              id="filled-password-input"
-              type="password"
-              label="Re-enter Password"
-              variant="filled"
-              name="passwordConfirmation"
-            />
-            <Button type="submit" variant="contained" disabled={disabled}>
-              Sign Up
-            </Button>
-          </form>
+      <form className={classes.paper} onSubmit={handleSubmit}>
+        <TextField
+          value={formValues.username}
+          onChange={handleInputChange}
+          required
+          id="filled-required"
+          label="Username"
+          variant="filled"
+          name="username"
+        />
+        <TextField
+          value={formValues.password}
+          onChange={handleInputChange}
+          required
+          id="filled-password-input"
+          label="Password"
+          type="password"
+          variant="filled"
+          name="password"
+        />
+        <TextField
+          value={formValues.passwordConfirmation}
+          onChange={handleInputChange}
+          required
+          id="filled-password-input"
+          type="password"
+          label="Re-enter Password"
+          variant="filled"
+          name="passwordConfirmation"
+        />
+        <Button type="submit" variant="contained" disabled={disabled}>
+          Sign Up
+        </Button>
+      </form>
     </div>
   );
 };

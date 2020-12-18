@@ -137,7 +137,7 @@ export const Dashboard = () => {
       });
   }, []);
   return (
-    <div onSubmit={handleSubmit}>
+    <div>
       <NavBar />
       <Paper className={classes.root}>
         <Typography variant="h5" component="h5">
@@ -171,15 +171,17 @@ export const Dashboard = () => {
           </div>
         </div>
         <div className={classes.flex}>
+          <form onSubmit={handleSubmit}>
             <TextField
               label="Send a message"
               className={classes.chatBox}
               value={textValue}
-              onChange={e => setTextValue(e.target.value)}
+              onChange={(e) => setTextValue(e.target.value)}
             />
-            <Button onClick={handleSubmit} disabled={disabled} color="primary">
+            <Button type="submit" disabled={disabled} color="primary">
               Send
             </Button>
+          </form>
         </div>
       </Paper>
     </div>

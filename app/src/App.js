@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Route,
-  Switch,
-  useHistory,
-} from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import axios from "axios";
 import * as yup from "yup";
 
@@ -23,32 +19,41 @@ const initialFormValues = {
 function App() {
   const [formValues, setFormValues] = useState(initialFormValues);
   const [formErrors, setFormErrors] = useState(initialFormValues);
-  const [members, setMembers] = useState([])
+  const [members, setMembers] = useState([]);
+  const [currentUser, setCurrentUser] = useState([]);
 
   const history = useHistory();
+
+
+  const saveToLocalStorage = (username, id) => {
+    localStorage.setItem("username", username);
+    localStorage.setItem("member_id", id);
+  };
 
   const postNewUser = (newUser) => {
     axios
       .post("https://planner-be.herokuapp.com/api/register", newUser)
       .then((res) => {
-        localStorage.setItem("token", res.data.token);
-        setFormValues(initialFormValues);
+        axios
+          .get(`https://planner-be.herokuapp.com/member/${res.data.data.id}`)
+          .then((response) => {
+            setCurrentUser([response.data.user]);
+          })
+          .catch((err) => console.log(err))
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  
-
   const getMembers = () => {
     axios
-    .get('https://planner-be.herokuapp.com/member')
-    .then(res => setMembers(res.data.members))
-    .catch(err => {
-      console.log(err)
-    })
-  }
+      .get("https://planner-be.herokuapp.com/member")
+      .then((res) => setMembers(res.data.members))
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const inputChange = (name, value) => {
     yup
@@ -77,21 +82,24 @@ function App() {
       username: formValues.username.trim(),
       password: formValues.password.trim(),
     };
-    localStorage.setItem('username', formValues.username)
     postNewUser(newUser);
+    saveToLocalStorage(currentUser[0].username, currentUser[0].id)
+    console.log("heres currentUser", currentUser)
     axios
-    .post("https://planner-be.herokuapp.com/api/login", newUser)
-    .then(res => {
-      localStorage.setItem('token', res.data.token)
-      history.push('/dashboard')
-    })
-    setFormValues(initialFormValues)
-
+      .post("https://planner-be.herokuapp.com/api/login", newUser)
+      .then((res) => {
+        localStorage.setItem("token", res.data.token);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setFormValues(initialFormValues);
+        history.push("/dashboard");
+      });
   };
 
   useEffect(() => {
-    getMembers()
-  },[])
+    getMembers();
+  }, []);
 
   return (
     <div className="App">
@@ -103,6 +111,9 @@ function App() {
             inputChange={inputChange}
             submit={submit}
             members={members}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+            saveToLocalStorage={saveToLocalStorage}
           />
         </Route>
         <PrivateRoute path="/dashboard" component={Dashboard} exact />
